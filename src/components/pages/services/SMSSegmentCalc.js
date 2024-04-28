@@ -6,7 +6,7 @@ function SearchBar() {
     return (
       <form>
         <h1>SMS Segment Calculator</h1>
-        <div className="textInputBox">
+        <div className="textInputBox"> 
             <textarea></textarea>
         
             <label>
