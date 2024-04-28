@@ -1,0 +1,14 @@
+h1 {
+    text-align: center;
+}
+
+.textInputBox {
+    text-align: center;
+    padding: 20px 40px;
+}
+.textInputBox > textarea {
+    resize: vertical;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 5em;
+}
