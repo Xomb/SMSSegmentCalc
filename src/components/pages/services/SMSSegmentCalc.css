@@ -1,3 +1,9 @@
+body {
+    max-width: 100%;
+    font-family: "Helvetica", sans-serif;
+    font-size: 11pt;
+}
+
 h1 {
     text-align: center;
 }
@@ -11,4 +17,12 @@ h1 {
     width: 100%;
     box-sizing: border-box;
     min-height: 5em;
+}
+#information-box {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    column-gap: 10px;
+    grid-auto-flow: column;
+    grid-template-rows: auto auto;
+    justify-content: space-between;
 }
