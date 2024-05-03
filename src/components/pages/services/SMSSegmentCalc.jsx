@@ -14,58 +14,33 @@ function SearchBar() {
   };
 
   function ascii_to_hexa(str) {
-    var arr1: string[] = []; // Initialize an empty array to store the hexadecimal values
+    let arr1 = []; // Initialize an empty array to store the hexadecimal values
+   
     for (
-      var n = 0, l = str.length;
+      let n = 0, l = str.length;
       n < l;
       n++ // Iterate through each character in the input string
     ) {
-      var hex = Number(str.charCodeAt(n)).toString(16); // Convert the ASCII value of the current character to its hexadecimal representation
+      let hex = Number(str.charCodeAt(n)).toString(16); // Convert the ASCII value of the current character to its hexadecimal representation
 
       if (hex.length === 2) {
         hex = "0x00" + hex;
       } else if (hex.length === 3) {
         hex = "0x0" + hex;
       } else hex = "0x" + hex;
-
-      arr1[str[n]] = hex; // Push the hexadecimal value to the array
+      
+      const combinedValues = {
+        hex,
+        code: str[n]
+      }
+      
+      arr1.push(combinedValues); // Push the hexadecimal value to the array. This array is getting assigned a number for each character entered
     }
+    console.log(arr1);
     return arr1; // Join the hexadecimal values in the array to form a single string
   }
 
   const hex_array = ascii_to_hexa(smsInputText);
-  let text = smsInputText;
-  const text_array = text.split("");
-
-  interface Props {
-    items: string[];
-    onSelectedItem: (item: string) => void;
-  }
-  function ListCombined({ items, onSelectedItem }: Props) {
-    const [selectedIndex, setSelectedIndex] = useState(-1);
-
-    return (
-      <>
-        {items.length === 0 && <p>Please enter your message!</p>}
-        {items.map((item, index) => (
-          <span
-            className={
-              selectedIndex === index
-                ? "hexStyleSettings active"
-                : "hexStyleSettings"
-            }
-            key={item}
-            onClick={() => {
-              setSelectedIndex(index);
-              onSelectedItem(item);
-            }}
-          >
-            {item}
-          </span>
-        ))}
-      </>
-    );
-  }
 
   return (
     <form>
@@ -74,8 +49,8 @@ function SearchBar() {
         <textarea value={smsInputText} onChange={handleTextChange}></textarea>
       </div>
       <div className="information-box">
-        <span className="label">
-          Use{" "}
+        {/* <span className="label">
+          Use
           <a href="https://www.twilio.com/docs/messaging/services#smart-encoding">
             Smart Encoding
           </a>
@@ -97,7 +72,7 @@ function SearchBar() {
         </div>
         <span className="label">Encoding Used</span>
         <span className="value" id="encoding-used"></span>
-        <span className="label">Number of Words</span>
+        <span className="label">Number of Words</span> */}
         <span className="value" id="word-counter">
           {wordCount}
         </span>
@@ -119,31 +94,36 @@ function SearchBar() {
           <span className="label">Parsed Characters</span>
           <span className="value">
             <div className="message-blocks">
-              {text_array.map((textPiece, key) => {
-                if (typeof textPiece === "string") {
+              {hex_array.map((textPiece, key) => {
                   return (
                     <span className="messageStyleSettings" key={key}>
-                      {textPiece}
+                      {textPiece.code}
                     </span>
                   );
                 }
-              })}{" "}
+              )}
             </div>
           </span>
           <span className="label">Parsed Hex Values</span>
           <span className="value">
             <div className="hex-blocks">
-              <ListCombined
-                items={hex_array}
-                onSelectedItem={handleTextChange}
-              />
+              {hex_array.length === 0 && <p>Please enter your message!</p>}
+              {hex_array.map((hexPiece, key) => {
+                    console.log(hexPiece)
+                    return (
+                    <span className="hexStyleSettings" key={key}>                
+                      {hexPiece.hex}                
+                    </span>                       
+                  );} 
+                )}            
             </div>
           </span>
         </div>
       </div>
     </form>
-  );
+  ); 
 }
+ 
 
 export const SMSSegmentCalc = () => {
   return <SearchBar />;
