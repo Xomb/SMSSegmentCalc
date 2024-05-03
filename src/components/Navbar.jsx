@@ -31,9 +31,6 @@ export const Navbar = () => {
           <NavLink to="/SMSSegmentCalc">SMS Segment Calculator</NavLink>
         </li>
         <li>
-          <NavLink to="/TextCounterV2">TextCounterV2</NavLink>
-        </li>
-        <li>
           <NavLink to="/contact">Contact</NavLink>
         </li>
       </ul>

@@ -36,7 +36,6 @@ function SearchBar() {
       
       arr1.push(combinedValues); // Push the hexadecimal value to the array. This array is getting assigned a number for each character entered
     }
-    console.log(arr1);
     return arr1; // Join the hexadecimal values in the array to form a single string
   }
 
@@ -49,30 +48,9 @@ function SearchBar() {
         <textarea value={smsInputText} onChange={handleTextChange}></textarea>
       </div>
       <div className="information-box">
-        {/* <span className="label">
-          Use
-          <a href="https://www.twilio.com/docs/messaging/services#smart-encoding">
-            Smart Encoding
-          </a>
-          ?
-        </span>
-        <div className="value">
-          <select className="not-really-value" id="smart-encoding">
-            <option value="no">No</option>
-            <option value="yes">Yes</option>
-          </select>
-        </div>
-        <span className="label">Encoding</span>
-        <div className="value">
-          <select className="not-really-value" id="encoding">
-            <option value="auto">Automatic</option>
-            <option value="GSM-7">GSM-7</option>
-            <option value="UCS-2">UCS-2</option>
-          </select>
-        </div>
         <span className="label">Encoding Used</span>
         <span className="value" id="encoding-used"></span>
-        <span className="label">Number of Words</span> */}
+        <span className="label">Number of Words</span>
         <span className="value" id="word-counter">
           {wordCount}
         </span>
@@ -85,9 +63,13 @@ function SearchBar() {
           {count}
         </span>
         <span className="label">Message size</span>
-        <span className="value" id="message-size-counter"></span>
+        <span className="value" id="message-size-counter">
+          {smsInputText.length * 16}
+        </span>
         <span className="label">Total size sent</span>
-        <span className="value" id="total-size-counter"></span>
+        <span className="value" id="total-size-counter">
+        {smsInputText.length * 16}
+        </span>
       </div>
       <div className="textOutputBox">
         <div className="textOutputBoxInner">
@@ -96,7 +78,7 @@ function SearchBar() {
             <div className="message-blocks">
               {hex_array.map((textPiece, key) => {
                   return (
-                    <span className="messageStyleSettings" key={key}>
+                    <span className="block messageStyleSettings" key={key}>
                       {textPiece.code}
                     </span>
                   );
@@ -109,9 +91,8 @@ function SearchBar() {
             <div className="hex-blocks">
               {hex_array.length === 0 && <p>Please enter your message!</p>}
               {hex_array.map((hexPiece, key) => {
-                    console.log(hexPiece)
                     return (
-                    <span className="hexStyleSettings" key={key}>                
+                    <span className="block hexStyleSettings" key={key}>                
                       {hexPiece.hex}                
                     </span>                       
                   );} 
