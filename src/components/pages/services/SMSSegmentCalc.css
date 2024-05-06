@@ -10,12 +10,13 @@ h1 {
 
 .textInputBox {
     text-align: center;
-    padding: 20px;
+    padding: 10px;
 }
 .textInputBox > textarea {
     resize: vertical;
     width: 100%;
     box-sizing: border-box;
+    border-radius: .5em;
     min-height: 5em;
 }
 .information-box {
@@ -39,4 +40,7 @@ h1 {
 .hex-blocks span:hover {
     background-color: cadetblue;
     color: white;
+}
+.textOutputBoxInner {
+    padding: 10px;
 }

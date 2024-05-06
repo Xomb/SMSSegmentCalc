@@ -40,6 +40,19 @@ function SearchBar() {
   }
 
   const hex_array = ascii_to_hexa(smsInputText);
+  console.log(hex_array);
+  
+
+
+  function charHighlight() {
+    document.getElementById("characterSelection").className += " selected";
+  }
+  function charHighlightRemover() {
+    document.getElementById("characterSelection").className = "messageStyleSettings";
+  }
+
+
+
 
   return (
     <form>
@@ -48,13 +61,16 @@ function SearchBar() {
         <textarea value={smsInputText} onChange={handleTextChange}></textarea>
       </div>
       <div className="information-box">
-        <span className="label">Encoding Used</span>
-        <span className="value" id="encoding-used"></span>
-        <span className="label">Number of Words</span>
+        <span className="label">Encoding</span>
+        <span className="value" id="encoding-used">
+        {hex_array === 'u' && <p>UCS-2</p>}
+        {hex_array !== 'u' && <p>GSM-7</p>}
+        </span>
+        <span className="label">Word Count</span>
         <span className="value" id="word-counter">
           {wordCount}
         </span>
-        <span className="label">Number of characters</span>
+        <span className="label">Character Count</span>
         <span className="value" id="unicode-char-counter">
           {count}
         </span>
@@ -62,11 +78,11 @@ function SearchBar() {
         <span className="value" id="unicode-scalar-counter">
           {count}
         </span>
-        <span className="label">Message size</span>
+        <span className="label">Message Size</span>
         <span className="value" id="message-size-counter">
           {smsInputText.length * 16}
         </span>
-        <span className="label">Total size sent</span>
+        <span className="label">Total size submitted</span>
         <span className="value" id="total-size-counter">
         {smsInputText.length * 16}
         </span>
@@ -78,7 +94,7 @@ function SearchBar() {
             <div className="message-blocks">
               {hex_array.map((textPiece, key) => {
                   return (
-                    <span className="block messageStyleSettings" key={key}>
+                    <span className='messageStyleSettings' id="characterSelection" onMouseOver={charHighlight} onMouseOut={charHighlightRemover} key={key}>
                       {textPiece.code}
                     </span>
                   );
@@ -92,7 +108,7 @@ function SearchBar() {
               {hex_array.length === 0 && <p>Please enter your message!</p>}
               {hex_array.map((hexPiece, key) => {
                     return (
-                    <span className="block hexStyleSettings" key={key}>                
+                    <span className='messageStyleSettings ' id="characterSelection" onMouseOver={charHighlight} onMouseOut={charHighlightRemover} key={key}>                
                       {hexPiece.hex}                
                     </span>                       
                   );} 
