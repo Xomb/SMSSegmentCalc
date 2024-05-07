@@ -14,45 +14,64 @@ function SearchBar() {
   };
 
   function ascii_to_hexa(str) {
-    let arr1 = []; // Initialize an empty array to store the hexadecimal values
-   
-    for (
-      let n = 0, l = str.length;
-      n < l;
-      n++ // Iterate through each character in the input string
-    ) {
+    let arr1 = []; // Initialize an empty array to store the hexadecimal values   
+    for (let n = 0, l = str.length; n < l; n++) {  // Iterate through each character in the input string     
       let hex = Number(str.charCodeAt(n)).toString(16); // Convert the ASCII value of the current character to its hexadecimal representation
-
       if (hex.length === 2) {
         hex = "0x00" + hex;
       } else if (hex.length === 3) {
         hex = "0x0" + hex;
       } else hex = "0x" + hex;
-      
+
       const combinedValues = {
         hex,
         code: str[n]
-      }
-      
+      }      
       arr1.push(combinedValues); // Push the hexadecimal value to the array. This array is getting assigned a number for each character entered
     }
+
     return arr1; // Join the hexadecimal values in the array to form a single string
   }
+  const hex_array = ascii_to_hexa(smsInputText); // This contains the character and its associated hex/unicode value in an array
 
-  const hex_array = ascii_to_hexa(smsInputText);
-  console.log(hex_array);
+  // Section below is used for creating hover over, highlighted, associations for the character and unicode
+
+  function charHighlight(key, parentClass){
+    return (e) => {
+      
+      e.target.className += " selected"
+      const el = document.getElementsByClassName(`${parentClass} > ${key}-value`)
+      console.log(el);
+      if(el.length > 0){
+       el[0].className += " selected"
+      }
+    }
+  }
+  function charHighlightRemover(key, parentClass){
+    return (e) => {
+      e.target.className = `messageStyleSettings ${key}-value`
+      const el = document.getElementsByClassName(`${parentClass} > ${key}-value selected`)
+      console.log(el);
+      if(el.length > 0){
+        el[0].className = `messageStyleSettings ${key}-value`
+      }
+    }
+  }
+  // The section below is used for checking if the given string is GSM or UNICODE encoding
+  function containsNonLatinCodepoints(s) {
+    return /[^\u0000-\u00ff]/g.test(s);
+  }
+  const hexOutput = containsNonLatinCodepoints(smsInputText);
   
-
-
-  function charHighlight() {
-    document.getElementById("characterSelection").className += " selected";
-  }
-  function charHighlightRemover() {
-    document.getElementById("characterSelection").className = "messageStyleSettings";
+  function IsGSM({encodingChecker}) {
+    if (encodingChecker){
+      return <p>UCS-2</p>;
+    } 
+    return <p>GSM-7</p>
   }
 
-
-
+  const segmentCount = count / 130;
+  console.log(segmentCount);
 
   return (
     <form>
@@ -62,28 +81,29 @@ function SearchBar() {
       </div>
       <div className="information-box">
         <span className="label">Encoding</span>
-        <span className="value" id="encoding-used">
-        {hex_array === 'u' && <p>UCS-2</p>}
-        {hex_array !== 'u' && <p>GSM-7</p>}
+        <span className="value" id="encoding-used">         
+          <IsGSM 
+            outputChecker={hexOutput}
+          />    
         </span>
-        <span className="label">Word Count</span>
-        <span className="value" id="word-counter">
+        <span className="label">Segment Counter</span>
+        <span className="value">
           {wordCount}
         </span>
         <span className="label">Character Count</span>
-        <span className="value" id="unicode-char-counter">
+        <span className="value">
           {count}
         </span>
         <span className="label">Number of Unicode scalars</span>
-        <span className="value" id="unicode-scalar-counter">
+        <span className="value">
           {count}
         </span>
         <span className="label">Message Size</span>
-        <span className="value" id="message-size-counter">
+        <span className="value">
           {smsInputText.length * 16}
         </span>
         <span className="label">Total size submitted</span>
-        <span className="value" id="total-size-counter">
+        <span className="value">
         {smsInputText.length * 16}
         </span>
       </div>
@@ -94,7 +114,7 @@ function SearchBar() {
             <div className="message-blocks">
               {hex_array.map((textPiece, key) => {
                   return (
-                    <span className='messageStyleSettings' id="characterSelection" onMouseOver={charHighlight} onMouseOut={charHighlightRemover} key={key}>
+                    <span className={`messageStyleSettings ${key}-value`} onMouseOver={charHighlight(key, "hex-blocks")} onMouseOut={charHighlightRemover(key, "hex-blocks")} key={key}>
                       {textPiece.code}
                     </span>
                   );
@@ -108,7 +128,7 @@ function SearchBar() {
               {hex_array.length === 0 && <p>Please enter your message!</p>}
               {hex_array.map((hexPiece, key) => {
                     return (
-                    <span className='messageStyleSettings ' id="characterSelection" onMouseOver={charHighlight} onMouseOut={charHighlightRemover} key={key}>                
+                    <span className={`messageStyleSettings ${key}-value`} onMouseOver={charHighlight(key, "message-blocks")} onMouseOut={charHighlightRemover(key, "message-blocks")} key={key}>                
                       {hexPiece.hex}                
                     </span>                       
                   );} 

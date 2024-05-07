@@ -28,7 +28,9 @@ h1 {
     justify-content: space-between;
     padding: 20px;
 }
-
+.hex-blocks {
+    width: 100%;
+}
 .hex-blocks span {  
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     border-right: 1px solid rgba(0, 0, 0, 0.2);

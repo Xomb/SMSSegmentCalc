@@ -25,9 +25,6 @@ export const Navbar = () => {
           <NavLink to="/about">About</NavLink>
         </li>
         <li>
-          <NavLink to="/services">Services</NavLink>
-        </li>
-        <li>
           <NavLink to="/SMSSegmentCalc">SMS Segment Calculator</NavLink>
         </li>
         <li>
