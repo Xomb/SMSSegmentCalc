@@ -37,11 +37,10 @@ function SearchBar() {
   // Section below is used for creating hover over, highlighted, associations for the character and unicode
 
   function charHighlight(key, parentClass){
-    return (e) => {
-      
+    return (e) => {      
       e.target.className += " selected"
       const el = document.getElementsByClassName(`${parentClass} > ${key}-value`)
-      console.log(el);
+      //console.log(el);
       if(el.length > 0){
        el[0].className += " selected"
       }
@@ -51,9 +50,9 @@ function SearchBar() {
     return (e) => {
       e.target.className = `messageStyleSettings ${key}-value`
       const el = document.getElementsByClassName(`${parentClass} > ${key}-value selected`)
-      console.log(el);
+      //console.log(el);
       if(el.length > 0){
-        el[0].className = `messageStyleSettings ${key}-value`
+        el.target.className = `messageStyleSettings ${key}-value`
       }
     }
   }
@@ -63,15 +62,22 @@ function SearchBar() {
   }
   const hexOutput = containsNonLatinCodepoints(smsInputText);
   
-  function IsGSM({encodingChecker}) {
-    if (encodingChecker){
-      return <p>UCS-2</p>;
-    } 
+  function IsGSM({outputChecker}) {
+    if (outputChecker){
+      return <p>UCS-2</p>
+    }
     return <p>GSM-7</p>
+  }  
+
+  // This section is used for taking the input string and breaking it into segments of 140 characters if GSM and 70 if UNI.
+   function segCount() {
+   const segmentCount = [];
+   segmentCount.push(smsInputText.substring(0, 140));
+   segmentCount.push(smsInputText.substring(140));
+
+   console.log(segmentCount);
   }
 
-  const segmentCount = count / 130;
-  console.log(segmentCount);
 
   return (
     <form>
