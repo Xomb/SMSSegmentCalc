@@ -17,7 +17,10 @@ function SearchBar() {
     let arr1 = []; // Initialize an empty array to store the hexadecimal values   
     for (let n = 0, l = str.length; n < l; n++) {  // Iterate through each character in the input string     
       let hex = Number(str.charCodeAt(n)).toString(16); // Convert the ASCII value of the current character to its hexadecimal representation
-      if (hex.length === 2) {
+      if (hex.length === 1){
+        hex = "0x000" + hex;
+      }
+      else if (hex.length === 2) {
         hex = "0x00" + hex;
       } else if (hex.length === 3) {
         hex = "0x0" + hex;
@@ -70,13 +73,23 @@ function SearchBar() {
   }  
 
   // This section is used for taking the input string and breaking it into segments of 140 characters if GSM and 70 if UNI.
-   function segCount() {
-   const segmentCount = [];
-   segmentCount.push(smsInputText.substring(0, 140));
-   segmentCount.push(smsInputText.substring(140));
-
-   console.log(segmentCount);
+  function segCount(hex_array){
+    let segmentCounter = [];
+      if (IsGSM) {
+        for (let n = 0, charLength = hex_array.length; n < charLength; n+= 70) {
+          segmentCounter.push(hex_array.substring(n, n + 70));
+        }
+      } else {
+          for (let n = 0, charLength = hex_array.length; n < charLength; n+= 160) {
+            segmentCounter.push(hex_array.substring(n, n + 160));
+          }
+        }return segmentCounter;
+        
   }
+  
+  const segmentBuilder = segCount(smsInputText);
+
+  console.log(segmentBuilder.length);
 
 
   return (
@@ -94,7 +107,7 @@ function SearchBar() {
         </span>
         <span className="label">Segment Counter</span>
         <span className="value">
-          {wordCount}
+          {segmentBuilder.length}
         </span>
         <span className="label">Character Count</span>
         <span className="value">

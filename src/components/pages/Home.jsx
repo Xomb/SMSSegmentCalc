@@ -5,7 +5,7 @@ export const Home = () => {
         <>
         <div>
             <img src="../images/poo.png" alt="~!Teodoro Guillen dot COM!~"/>
-        </div>
+        </div>  
         </>
         );
 }
